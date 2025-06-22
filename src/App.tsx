@@ -1,3 +1,5 @@
+import {ToastContainer} from 'react-toastify'
+
 import PatientForm from "./components/PatientForm"
 import PatientList from "./components/PatientList"
 
@@ -13,6 +15,8 @@ function App() {
           <PatientList />
         </div>
       </div>
+      
+      <ToastContainer pauseOnHover={false}/>
     </>
   )
 }

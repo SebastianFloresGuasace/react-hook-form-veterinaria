@@ -1,8 +1,10 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+
 import Error from "./Error";
 import type { DraftPatient } from "../types";
 import { usePatientStore } from "../store";
-import { useEffect } from "react";
 
 export default function PatientForm() {
 
@@ -18,7 +20,7 @@ export default function PatientForm() {
         const activePatient = patients.filter( patient => patient.id === activeId)[0]
         setValue('name', activePatient.name)
         setValue('caretaker', activePatient.caretaker)
-        setValue('email', activePatient.email)
+        setValue('contacto', activePatient.contacto)
         setValue('date', activePatient.date)
         setValue('symptoms', activePatient.symptoms)
       }
@@ -29,8 +31,10 @@ export default function PatientForm() {
 
         if (activeId) {
             updatePatient(data)
+            toast.success('Cambios Guardados Correctamente')
         } else {
             addPatient(data);
+            toast.success('Paciente Registrado Correctamente')
         }
         reset()
     };
@@ -62,13 +66,10 @@ export default function PatientForm() {
                         id="name"
                         className="w-full p-3  border border-gray-100"
                         type="text"
-                        placeholder="Nombre del Paciente"
+                        placeholder="Nombre de la Mascota"
                         {...register("name", {
-                            required: "El nombre del Paciente es obligatorio",
-                            // maxLength: {
-                            //     value: 8,
-                            //     message: 'Máximo 8 caracteres'
-                            // }
+                            required: "El nombre de la Mascota es obligatorio",
+                           
                         })}
                     />
                     {errors.name && (
@@ -82,15 +83,15 @@ export default function PatientForm() {
                         htmlFor="caretaker"
                         className="text-sm uppercase font-bold"
                     >
-                        Propietario
+                        Dueño
                     </label>
                     <input
                         id="caretaker"
                         className="w-full p-3  border border-gray-100"
                         type="text"
-                        placeholder="Nombre del Propietario"
+                        placeholder="Nombre del Dueño"
                         {...register("caretaker", {
-                            required: "El nombre del propietario es obligatorio",
+                            required: "El nombre del Dueño es obligatorio",
                         })}
                     />
                     {errors.caretaker && (
@@ -100,26 +101,26 @@ export default function PatientForm() {
 
                 <div className="mb-5">
                     <label
-                        htmlFor="email"
+                        htmlFor="contacto"
                         className="text-sm uppercase font-bold"
                     >
-                        Email
+                        Contacto
                     </label>
                     <input
-                        id="email"
+                        id="contacto"
                         className="w-full p-3  border border-gray-100"
-                        type="email"
-                        placeholder="Email de Registro"
-                        {...register("email", {
-                            required: "El Email es Obligatorio",
+                        type="text"
+                        placeholder="Número o Email del Dueño"
+                        {...register("contacto", {
+                            required: "El Número o Email es Obligatorio",
                             pattern: {
-                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                              message: 'Email No Válido'
+                              value: /^(?:[0-9]{8}|[A-Z0-9._%+-]+@gmail\.com)$/i,
+                              message: 'Número o Email No Válido'
                             }
                         })} 
                     />
-                    {errors.email && (
-                        <Error>{errors.email?.message}</Error>
+                    {errors.contacto && (
+                        <Error>{errors.contacto?.message}</Error>
                     )}
                 </div>
 
@@ -128,7 +129,7 @@ export default function PatientForm() {
                         htmlFor="date"
                         className="text-sm uppercase font-bold"
                     >
-                        Fecha Alta
+                        Fecha de Alta
                     </label>
                     <input
                         id="date"
@@ -165,8 +166,8 @@ export default function PatientForm() {
 
                 <input
                     type="submit"
-                    className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
-                    value="Guardar Paciente"
+                    className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors rounded"
+                    value={activeId ? "Guardar Cambios" : "Agregar Paciente"}
                 />
             </form>
         </div>
